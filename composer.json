@@ -1,17 +1,20 @@
 {
-	"name": "ofelix03/transformer",
-	"description": "A simple associative (i.e. a key:value pair) data transformer which transforms the key's of an array data to some 
-					other specified keys. It also supports casting of data key's corresponding value to a specified PHP data type",
-	"keywords": ["Transformer", "Type Casting", "PHP"],
-    "license": "MIT",
-    "authors": {
-    	"name": "Felix Otoo",
-    	"email": "ofelix03@gmail.com",
-    	"role": "developer"
-    },
-	"autoload": {
-		"prs-4": {
-			"Ofelix03\\Transformer\\": "src"
-		}
-	}
+  "name": "ofelix03/transformer",
+  "description": "A simple associative (i.e. a key:value pair) data transformer which transforms the key's of an array data to some other specified keys. It also supports casting of data key's corresponding value to a specified PHP data type",
+  "keywords": [
+    "Transformer",
+    "Type Casting",
+    "PHP"
+  ],
+  "license": "MIT",
+  "authors": {
+    "name": "Felix Otoo",
+    "email": "ofelix03@gmail.com",
+    "role": "developer"
+  },
+  "autoload": {
+    "prs-4": {
+      "Ofelix03\\Transformer\\": "src"
+    }
+  }
 }
