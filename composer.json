@@ -7,13 +7,15 @@
     "PHP"
   ],
   "license": "MIT",
-  "authors": {
-    "name": "Felix Otoo",
-    "email": "ofelix03@gmail.com",
-    "role": "developer"
-  },
+  "authors": [
+    {
+      "name": "Felix Otoo",
+      "email": "ofelix03@gmail.com",
+      "role": "developer"
+    }
+  ],
   "autoload": {
-    "prs-4": {
+    "psr-4": {
       "Ofelix03\\Transformer\\": "src"
     }
   }
