@@ -7,7 +7,7 @@
     "authors": {
     	"name": "Felix Otoo",
     	"email": "ofelix03@gmail.com",
-    	"role": "developer",
+    	"role": "developer"
     },
 	"autoload": {
 		"prs-4": {
