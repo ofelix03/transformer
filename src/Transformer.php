@@ -2,21 +2,26 @@
 
 namespace Ofelix03\Transformer;
 
+/** 
+ * @author Felix Otoo <ofelix03@gmail.com>
+ * @license [<url>] MIT
+ */
+
 class Transformer {
 
 	/** @var \KeysBag The keys expected in the request data */
 	protected $requestKeys;
 
-	/** @var \KeysBag The keys expected to replace the keys in  the request fields */
+	/** @var \KeysBag The keys expected to replace the keys in the request fields */
 	protected $morphKeys;
 
 	/** @var array The request payload to be transformed */
 	private $payload = [];
 
-	/** @var array The transformed data with the morphed keys */
+	/** @var array The transformed data */
 	private $morphedPayload = [];
 
-	/** @var boolean Indicates whether the transformer has been runned on request payload */
+	/** @var boolean Indicates whether the transformer has been runned on the request payload */
 	private $isTransformed = false;
 
 	/** A delimiter used to attach type to morphKeys to indicate type casting */
@@ -30,6 +35,7 @@ class Transformer {
 	protected $strict = false;
 
 	function __construct(array $payload = [], array $requestKeys = [], $morphKeys = []) {
+
 		$this->payload = $payload;
 
 		if (count($requestKeys)) {
@@ -48,7 +54,7 @@ class Transformer {
 			$this->morphKeys = new KeysBag([]);
 		}
 
-		$this->setIsTransform(false);
+		$this->setIsTransformed(false);
 	}
 
 	function isStrict() {
@@ -61,29 +67,18 @@ class Transformer {
 		return $this;
 	}
 
-	private function setIsTransform($bool = false) {
+	private function setIsTransformed($bool = false) {
 		$this->isTransformed = $bool;
 	}
 
-	private function isTransformed() {
+	function isTransformed() {
 		return $this->isTransformed;
 	}
 
-	/**
-	 * Returns an array of keys expected from our request payload
-	 * 
-	 *
-	 * @return array 
-	 */
 	function createRequestKeys() {
 		return [];
 	}
-
-	/**
-	 * Returns an array of keys expected to replace our request keys
-	 * 
-	 * @return array
-	 */
+	
 	function createMorphKeys() {
 		return [];
 	}
@@ -108,7 +103,7 @@ class Transformer {
 		$this->payload = $payload;
 	}
 
-	function compareKeys() {
+	function preview() {
 		$compare = [];
 
 		for($index = 0; $index < $this->requestKeys->count(); $index++) {
@@ -118,11 +113,16 @@ class Transformer {
 			$compare[$requestKey] = $morphKey;
 		}
 
-		return $compare;
+		echo "Request Key \t\t Morph Key \n";
+		foreach($compare as $reqKey => $morpKey) {
+			echo "------------------------------------\n";
+			echo "{$reqKey} ---------------------- {$morpKey}\n";
+		}
+		echo "-----------------------------------------\n";
 	}
 
 	function transform($payload = [], $strict = false) {
-		$this->setIsTransform(true);
+		$this->setIsTransformed(true);
 
 		if (count($payload)) {
 			$this->payload = $payload;
@@ -154,7 +154,6 @@ class Transformer {
 					$this->morphedPayload[$mKey] = $value;
 				}
 			} else {
-				// Let keep the key as it was in the request payload 
 				$this->morphedPayload[$key] = $value;
 			}
 		}
@@ -171,10 +170,10 @@ class Transformer {
 	}
 
 	function getMorphedData() {
-		if ($this->isTransformed()) {
-			return $this->morphedPayload;
-		} else {
+		if (!$this->isTransformed()) {
 			throw new \Exception("You have to run " + __CLASS__ + "::" + __METHOD__ + " before calling this method");
-		}
+		} 
+
+		return $this->morphedPayload;
 	}
 }
