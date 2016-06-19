@@ -21,5 +21,12 @@
     "psr-4": {
       "Ofelix03\\Transformer\\": "src"
     }
-  }
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/Seldaek/monolog"
+    }
+  ],
+  "minimum-stability": "dev"
 }
