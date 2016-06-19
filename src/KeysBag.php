@@ -2,6 +2,11 @@
 
 namespace Ofelix03\Transformer;
 
+/**
+ * @author Felix Otoo <ofelix03@gmail.com>
+ * @license [<url>] MIT
+ */
+
 class KeysBag {
 
 	private $keys = array();
@@ -10,6 +15,13 @@ class KeysBag {
 		$this->keys = $keys;
 	}
 
+
+	/**
+	 * Checks whether a key exists
+	 * 
+	 * @param  string  $key 
+	 * @return boolean      
+	 */
 	function hasKey($key) {
 		return in_array($key, $this->keys);
 	}
@@ -28,7 +40,7 @@ class KeysBag {
 	}
 
 	/**
-	 * Returns the number of keys in the KeyBag
+	 * Returns the total number of keys in the KeyBag
 	 * 
 	 * @return integer
 	 */
@@ -54,7 +66,7 @@ class KeysBag {
 	/**
 	 * Returns the index of a key
 	 * 
-	 * @param  integer $key [description]
+	 * @param  integer $key 
 	 * @return integer
 	 */
 	function getIndex($key) {
@@ -86,6 +98,7 @@ class KeysBag {
 
 	/**
 	 * Returns all the keys in the  KeyBag
+	 * 
 	 * @return array
 	 */
 	function all() {
