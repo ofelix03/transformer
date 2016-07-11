@@ -143,7 +143,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 
 ## Usage
 
-```
+```php
 // Assume $data is the request data we expect to change, 
 // some of it keys to some other keys
 
