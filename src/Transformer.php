@@ -4,7 +4,8 @@ namespace Ofelix03\Transformer;
 
 /** 
  * @author Felix Otoo <ofelix03@gmail.com>
- * @license [<url>] MIT
+ * @license MIT Check the license file associated with this package for detials of 
+ *          	the copyright agreements.
  */
 
 class Transformer {
@@ -127,7 +128,7 @@ class Transformer {
 		if (count($payload)) {
 			$this->payload = $payload;
 		} else if (!count($this->payload)) {
-			throw new \Exception('A paylaod is need for the transformation');
+			throw new \Exception('A payload is need for the transformation');
 		}
 
 		if ($this->requestKeys->count() == 0) {

@@ -2,9 +2,10 @@
 
 namespace Ofelix03\Transformer;
 
-/**
+/** 
  * @author Felix Otoo <ofelix03@gmail.com>
- * @license [<url>] MIT
+ * @license MIT Check the license file associated with this package for detials of 
+ *          	the copyright agreements.
  */
 
 class TypeCaster {
@@ -26,7 +27,7 @@ class TypeCaster {
 			throw new \InvalidArgumentException('A type to cast the value to is needed, none given');
 		}
 
-		if (static::CAST_TYPES['integer'] == $type) {
+		if (static::CAST_TYPES['integer'] === $type) {
 			return (int) $value;
 		} else if (static::CAST_TYPES['string'] === $type) {
 			return (string) $value;

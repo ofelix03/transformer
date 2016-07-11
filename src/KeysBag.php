@@ -2,9 +2,10 @@
 
 namespace Ofelix03\Transformer;
 
-/**
+/** 
  * @author Felix Otoo <ofelix03@gmail.com>
- * @license [<url>] MIT
+ * @license MIT Check the license file associated with this package for detials of 
+ *          	the copyright agreements.
  */
 
 class KeysBag {
@@ -28,10 +29,12 @@ class KeysBag {
 
 	/**
 	 * Checks if there is a key with the given index
+	 * 
 	 * @param  int  $index 
 	 * @return boolean        
 	 */
 	function hasIndex($index) {
+
 		if (isset($this->keys[$index])) {
 			return true;
 		}
