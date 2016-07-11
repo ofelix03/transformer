@@ -144,51 +144,51 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 ## Usage
 
 ```php
-// Assume $data is the request data we expect to change, 
-// some of it keys to some other keys
+	// Assume $data is the request data we expect to change, 
+	// some of it keys to some other keys
 
-$data = array(
-	'title' => 'Some Post Title',
-	'description' => 'Some post description here and there',
-	'pub_status' => '1',
-	'pub_dat' => '20-06-2016 12:30:30',
-	'comments_count => '10'
-);
-
-
-// Here, $reqKeys list the keys in $data which are going to 
-// be transformed to some there key
-
-$reqKeys = array(
-	'description',
-	'pub_status',
-	'pub_date',
-	'comments_count'
-);
+	$data = array(
+		'title' => 'Some Post Title',
+		'description' => 'Some post description here and there',
+		'pub_status' => '1',
+		'pub_dat' => '20-06-2016 12:30:30',
+		'comments_count => '10'
+	);
 
 
-// $morpKeys holds a sequential listing of keys which 
-// are to replace the keys speicified in the $reqKeys. 
-// The listing should parrallel to that found in $reqKeys.
+	// Here, $reqKeys list the keys in $data which are going to 
+	// be transformed to some there key
 
-// NB: Any key speicified in $reqKeys that has no matching 
-// index position in the $morpKeys array is skipped
+	$reqKeys = array(
+		'description',
+		'pub_status',
+		'pub_date',
+		'comments_count'
+	);
 
-$morphKeys = array(
-	'text',
-	'published_status:bool',
-	'published_date:dateTime',
-	'comments_cout:int'
-);
 
-// Time to transform some keys using the \ofelix03\Transformer\Transformer class 
-// NB: Make sure to autoload the class before using it, else it would not work. 
+	// $morpKeys holds a sequential listing of keys which 
+	// are to replace the keys speicified in the $reqKeys. 
+	// The listing should parrallel to that found in $reqKeys.
 
-$transformer = new \Ofelix03\Transformer\Transforer($data, $reqKeys, $morphKeys);
+	// NB: Any key speicified in $reqKeys that has no matching 
+	// index position in the $morpKeys array is skipped
 
-$result = $transformer->transform();
+	$morphKeys = array(
+		'text',
+		'published_status:bool',
+		'published_date:dateTime',
+		'comments_cout:int'
+	);
 
-var_dump($result);
+	// Time to transform some keys using the \ofelix03\Transformer\Transformer class 
+	// NB: Make sure to autoload the class before using it, else it would not work. 
+
+	$transformer = new \Ofelix03\Transformer\Transforer($data, $reqKeys, $morphKeys);
+
+	$result = $transformer->transform();
+
+	var_dump($result);
 
 ```
 
