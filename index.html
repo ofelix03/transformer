@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Transformer by ofelix03</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Transformer</h1>
+      <h2 class="project-tagline">A simple associative (i.e. a key:value pair) data transformer which transforms the key&#39;s of an array data to some  other specified keys. It also supports casting of data key&#39;s corresponding value to a specified PHP data type</h2>
+      <a href="https://github.com/ofelix03/transformer" class="btn">View on GitHub</a>
+      <a href="https://github.com/ofelix03/transformer/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ofelix03/transformer/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="transformer" class="anchor" href="#transformer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>transformer</h1>
+
+<p>A simple associative (i.e. a key:value pair) data transformer which transforms the key's of an array data to some  other specified keys. It also supports casting of data values to a specified PHP data type.</p>
+
+<h2>
+<a id="what-problems-this-package-tries-to-solve" class="anchor" href="#what-problems-this-package-tries-to-solve" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What problems this package tries to solve</h2>
+
+<ol>
+<li>Streamlining the process of tranforming data keys </li>
+<li>Reducing cluttering of application controller with data normalization activities such as keys transformation</li>
+<li>Upholding the <a href="http://www.wikipedia/dry_principle" title="DRY">DRY</a> principle by employing class for different data set key transformation.</li>
+</ol>
+
+<h2>
+<a id="code-to-suppor-the-above-claims" class="anchor" href="#code-to-suppor-the-above-claims" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code to suppor the above claims</h2>
+
+<p>Let first start with a code snippet that tries to present what we might normally do without this package.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// An http request payload data from a POST request</span></span>
+<span class="pl-s1">    <span class="pl-smi">$data</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Hey, am a title<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>description<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Hey, am simple description<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>pub_date<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>2016-05-10 10:05:30<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>comments_count<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>10<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">        );</span>
+<span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// In some project, where you have recieved an http request </span></span>
+<span class="pl-s1">    <span class="pl-c">// payload like the above, which needs to be normalized to </span></span>
+<span class="pl-s1">    <span class="pl-c">// match some specific database field names. </span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">//  The snippet below is a representation of what we might do </span></span>
+<span class="pl-s1">    <span class="pl-c">// (but with this package could be done much more fluently without    </span></span>
+<span class="pl-s1">    <span class="pl-c">// cluttering our application controller or codebase);</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">if</span> (<span class="pl-c1">isset</span>(<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>])) {</span>
+<span class="pl-s1">        <span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>newTitle<span class="pl-pds">'</span></span>] <span class="pl-k">=</span> <span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>]</span>
+<span class="pl-s1">        <span class="pl-c1">unset</span>(<span class="pl-smi">$dat</span>[<span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">if</span> (<span class="pl-c1">isset</span>(<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>description<span class="pl-pds">'</span></span>])) {</span>
+<span class="pl-s1">        <span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span>] <span class="pl-k">=</span> <span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>description<span class="pl-pds">'</span></span>];</span>
+<span class="pl-s1">        <span class="pl-c1">unset</span>(<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>description<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">if</span> (<span class="pl-c1">isset</span>(<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>pub_date<span class="pl-pds">'</span></span>])) {</span>
+<span class="pl-s1">        <span class="pl-c">// Here, we want to do both key transformation </span></span>
+<span class="pl-s1">        <span class="pl-c">// from 'pub_date' to a much consise and readable </span></span>
+<span class="pl-s1">        <span class="pl-c">// 'published_date' and also cast  the type of the </span></span>
+<span class="pl-s1">        <span class="pl-c">// published date to a PHP \DateTime object;</span></span>
+<span class="pl-s1">        <span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>published_date<span class="pl-pds">'</span></span>] <span class="pl-k">=</span> \DateTime(<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>pub_date<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1">        <span class="pl-c1">unset</span>(<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>pub_date<span class="pl-pds">'</span></span>]);</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">if</span> (<span class="pl-c1">isset</span>(<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>comments_count<span class="pl-pds">'</span></span>])) {</span>
+<span class="pl-s1">        <span class="pl-c">// Here, we did just type casting</span></span>
+<span class="pl-s1">        <span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>comments_count<span class="pl-pds">'</span></span>] <span class="pl-k">=</span> (<span class="pl-k">int</span>)<span class="pl-smi">$data</span>[<span class="pl-s"><span class="pl-pds">'</span>comments_count<span class="pl-pds">'</span></span>]</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span></pre></div>
+
+<p>Now let try to use this pacakge to streamline and remove the clutter in the above code snippet, even keeping your code DRY, not copying and pasting implementation all over the place.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// Using the same $data as in the above snippet.</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// We first create a class PostTransformer that tailors our transformation </span></span>
+<span class="pl-s1">    <span class="pl-c">// to our business model.</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c">// PostTransformer is suppose to implement just 2 methods </span></span>
+<span class="pl-s1">    <span class="pl-c">// 1. createRequestKeys</span></span>
+<span class="pl-s1">    <span class="pl-c">// 2. createMorphKeys</span></span>
+<span class="pl-s1">    <span class="pl-c">// Both methods returns an array of key definitions which represent the definitions of 'requestKeys' and 'morphKeys' as defined at the [bottom](http://ofelix3) of this page</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-k">class</span> <span class="pl-en">PostTransformer</span> <span class="pl-k">extends</span> <span class="pl-e">Transformer</span> {</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-c">// The return array contains the keys expected from the request </span></span>
+<span class="pl-s1">        <span class="pl-c">// payload data (.i.e $data)</span></span>
+<span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">createRequestKeys</span>() {</span>
+<span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>description<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>pub_date<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>comments_count<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                );</span>
+<span class="pl-s1">        }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">createMorphKeys</span>(){ </span>
+<span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>newTitle<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span>,</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">                <span class="pl-c">// This will transform the 'bub_date' key of the request </span></span>
+<span class="pl-s1">                <span class="pl-c">// payload data to 'published_date' and also cast the type</span></span>
+<span class="pl-s1">                <span class="pl-c">// of its value for that key to a PHP \DateTime</span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>published_date:datetime<span class="pl-pds">'</span></span>,  </span>
+<span class="pl-s1"></span>
+<span class="pl-s1">                <span class="pl-c">// This will cast the type of the value to a an integer </span></span>
+<span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>comments_count:int<span class="pl-pds">'</span></span> </span>
+<span class="pl-s1">                );</span>
+<span class="pl-s1">        }</span>
+<span class="pl-s1">    }</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    \\ <span class="pl-c1">Time</span> <span class="pl-c1">to</span> <span class="pl-c1">instantiate</span> <span class="pl-c1">our</span> <span class="pl-k">new</span> <span class="pl-c1">PostTransformer</span> <span class="pl-k">class</span></span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$postTransformer</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PostTransformer</span>(<span class="pl-smi">$data</span>);</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-smi">$postTransformer</span><span class="pl-k">-&gt;</span>transform();</span>
+<span class="pl-s1"></span>
+<span class="pl-s1">    <span class="pl-c1">var_dump</span>(<span class="pl-smi">$result</span>);</span>
+<span class="pl-s1"></span></pre></div>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<ol>
+<li>
+<p><strong>Using composer</strong></p>
+
+<p><code>composer require ofelix03\transformer</code></p>
+
+<p><strong>NB</strong>: Make sure to <code>require vendor\autoload.php</code> at the top of the the file you want to use the transformer package in.</p>
+</li>
+<li>
+<p><strong>Use github clone</strong>
+You can also clone the github repository for this package</p>
+
+<p>Simply run the following commands in your terminal. Make sure you already have git environment set up on your machine.</p>
+
+<ul>
+<li>
+<p><strong>Step 1</strong></p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c1">git</span> <span class="pl-k">clone</span> <span class="pl-c1">https</span>:\\<span class="pl-c1">www</span><span class="pl-k">.</span><span class="pl-c1">github</span><span class="pl-k">.</span><span class="pl-c1">com\ofelix03\</span><span class="pl-c1">transformer</span><span class="pl-k">.</span><span class="pl-c1">git</span></span></pre></div>
+</li>
+<li>
+<p><strong>Step 2</strong></p>
+
+<p>Copy the php files inside <code>src</code> directory to any location in your app directory structure and require them in this order:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>app\root\foler1\transformer\TypeCaster.php<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>app\root\foler1\transformer\KeysBag.php<span class="pl-pds">'</span></span>;</span>
+<span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>app\root\foler1\transformer\Transformer.php<span class="pl-pds">'</span></span>;</span></pre></div>
+</li>
+</ul>
+</li>
+</ol>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<pre><code>// Assume $data is the request data we expect to change, 
+// some of it keys to some other keys
+
+$data = array(
+    'title' =&gt; 'Some Post Title',
+    'description' =&gt; 'Some post description here and there',
+    'pub_status' =&gt; '1',
+    'pub_dat' =&gt; '20-06-2016 12:30:30',
+    'comments_count =&gt; '10'
+);
+
+
+// Here, $reqKeys list the keys in $data which are going to 
+// be transformed to some there key
+
+$reqKeys = array(
+    'description',
+    'pub_status',
+    'pub_date',
+    'comments_count'
+);
+
+
+// $morpKeys holds a sequential listing of keys which 
+// are to replace the keys speicified in the $reqKeys. 
+// The listing should parrallel to that found in $reqKeys.
+
+// NB: Any key speicified in $reqKeys that has no matching 
+// index position in the $morpKeys array is skipped
+
+$morphKeys = array(
+    'text',
+    'published_status:bool',
+    'published_date:dateTime',
+    'comments_cout:int'
+);
+
+// Time to transform some keys using the \ofelix03\Transformer\Transformer class 
+// NB: Make sure to autoload the class before using it, else it would not work. 
+
+$transformer = new \Ofelix03\Transformer\Transforer($data, $reqKeys, $morphKeys);
+
+$result = $transformer-&gt;transform();
+
+var_dump($result);
+
+</code></pre>
+
+<h2>
+<a id="other-apis-on-ofelix03transformertranformer" class="anchor" href="#other-apis-on-ofelix03transformertranformer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Other API's on \Ofelix03\Transformer\Tranformer</h2>
+
+<ul>
+<li>
+<p><strong>Tranformer::isStrict()</strong></p>
+
+<p>This checks whether the tranformation should  be done in strict mode or not. Strict mode, first checks if the $reqKeys is equal in length to the $morphKeys and throws an exception if they are not.</p>
+</li>
+<li>
+<p><strong>Transformer::setStrict($mode = false)</strong></p>
+
+<p>This allows you to set the mode for the transformation. The default mode is <code>FALSE</code>, if no argument is passed.</p>
+</li>
+<li>
+<p><strong>Transformer::isTransformed() : bool</strong></p>
+
+<p>Checks whether  the data has already been transformed, this help save wasting resources, transforming data that has already been transformed.</p>
+</li>
+<li>
+<p><strong>Transformer::setRequestKeys(array $reqKeys = [])</strong> </p>
+
+<p>This method allows you to set the $request keys after you've already created an instance of  <code>Ofelix03\Transformer\Transformer</code> class.
+<strong>NB</strong>: If this method is to be called, it should be called before calling <code>Transformer::transform()</code>, else an a run-time exception is thrown.</p>
+</li>
+<li>
+<p><strong>Transformer::setMorphKeys(array $morphKeys = [])</strong></p>
+
+<p>This method allows ou to set the keys that are to replace the $request keys during the transformation</p>
+</li>
+<li>
+<p><strong>Transformer::setRequestPayload(array $data)</strong> </p>
+
+<p>This is used to set the data that needs to be transformed. This can be used to override, the request data set during the construction of the transformer object. 
+NB: Call this method before invoking Tranformer::transform()</p>
+</li>
+<li>
+<p><strong>Transformer::transform($reqPayload = [], $strictMode = false)</strong> </p>
+
+<p>This is the method that does the magic, transforming keys to other speicified keys. And also type casting, if speicified.</p>
+
+<ul>
+<li><p><em>$reqPayload</em>
+This argument is optional. This is the data upon which the transformation is applied on, using the $requestKeys and $morphKeys definitions</p></li>
+<li><p><em>$strictMode</em>
+This second argument indicates the mode used for the transformation. 
+It's optional.</p></li>
+</ul>
+</li>
+<li>
+<p><strong>Transformer::getMorphedData() : array</strong></p>
+
+<p>This method is called after invoking <code>Transformer::tranform()</code> to get the transformed data (data with keys morphed into other keys)</p>
+</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ofelix03/transformer">Transformer</a> is maintained by <a href="https://github.com/ofelix03">ofelix03</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
