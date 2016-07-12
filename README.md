@@ -235,7 +235,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 
 ## Casting
 
-The following are the type currently supported for casting data.
+The following are the types currently supported for casting data.
 1. Integer (int)
 2. String (string)
 3. Array (array)
