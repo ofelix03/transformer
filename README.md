@@ -47,25 +47,32 @@ Let first start with a code snippet that tries to present what we might normally
 	}
 
 	if (isset($data['comments_count'])) {
-		// Here, we did just type casting, from string to integer
-		$data['comments_count'] = (int)$data['comments_count']
+		// Here, we do just type casting, from string to integer
+		$data['comments_count'] = (int) $data['comments_count']
 	}
+
+	// Now $data contains the transformed keys with their associated data
 
 ```
 
-Now let try to use this pacakge to streamline and remove the clutter in the above code snippet, even keeping our code DRY, not copying and pasting implementation all over the place.
+Now let try to use **Transformer** package to streamline and remove the clutter in the above code snippet, even keeping our code DRY, not copying and pasting implementation all over the place.
 
 ```php
 	// Using the same $data as in the above snippet.
 
+	// Here, we're using comoposer, hence we'll pull in composer's `venodor/autoload.php` to do it magic (autoloading)
+	require 'vendor/autoload.php';
+
+	// Also to use this library, we'll need the `Transformer` class
+	use Ofelix03\Transformer\Transformer
+
 	// We first create a class PostTransformer that tailors our transformation 
 	// to our business model.
-
 
 	// PostTransformer is suppose to implement just 2 methods 
 	// 1. createRequestKeys
 	// 2. createMorphKeys
-	// Both methods returns an array of key definitions which represent the definitions of 'requestKeys' and 'morphKeys' as defined at the [bottom](http://ofelix3) of this page
+	// Both methods returns an array of key definitions which represent the definitions of 'requestKeys' and 'morphKeys' as we will see in the code snippet below.
 
 	class PostTransformer extends Transformer {
  
@@ -84,10 +91,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 			return array(
 				'newTitle',
 				'text',
-				// This will transform the 'bub_date' key of the request 
-				// payload data to 'published_date' and also cast the type
-				// of its value for that key to a PHP \DateTime
-				'published_date:datetime',  
+				'published_date',  
 
 				// This will cast the type of the value to a an integer 
 				'comments_count:int' 
@@ -95,13 +99,24 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 		}
 	}
 
-	// Time to instantiate our new PostTransformer class
-
+	// Time to instantiate our new PostTransformer class, with the http request data ($data)
+	// we want to transform it keys, and hopefully do some casting on some values.
 	$postTransformer = new PostTransformer($data);
 
+	// Now we transform the keys, and also cast some values in the process by invoking transform() on 
+	// $postTransformer like so:
 	$result = $postTransformer->transform();
 	
-	// $result now contains our transformed keys with their corresponding values.
+	var_dump($result);
+
+	// This should be the output of the var_dump
+	array (5) {
+		["title"] => string(15) "Some Post title"
+		["description"] => string(36) "Some post description here and there"
+		["published_status"] => bool(true)
+		["published_date"] => string(19) "20-06-2016 12:30:30"
+		["comments_count"] => int(0)
+	}
 
 ```
 
@@ -173,7 +188,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 	$morphKeys = array(
 		'text',
 		'published_status:bool',
-		'published_date:dateTime',
+		'published_date',
 		'comments_cout:int'
 	);
 
@@ -201,39 +216,39 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 ## Other API's on \Ofelix03\Transformer\Tranformer 
 * **Tranformer::isStrict(): bool**
 
-	This checks whether the tranformation should  be done in strict mode or not. Strict mode, first checks if the $reqKeys is equal in length to the $morphKeys and throws an exception if they are not. Returns boolean (TRUE|FALSE).
+	This checks whether the transformation should  be done in strict mode or not. Strict mode, first checks if the $reqKeys is equal in length to the $morphKeys and throws an exception if they are not. Returns boolean (TRUE|FALSE).
 
 * **Transformer::setStrict($mode = false)**
 
-	This allows you to set the mode for the transformation. The default mode is ```FALSE```, if no argument is passed.
+	This allows you to set the mode for the transformation. The default mode is `FALSE` if no argument is passed.
 
 * **Transformer::isTransformed(): bool**
 
-	Checks whether  the data has already been transformed, this help save wasting time, transforming data that has already been transformed.
+	Checks whether the data (or payload) has already been transformed, this help save time, not transforming data that has already been transformed but instead getting the transformed data with `Transformer::getMorphedData()`.
 
 * **Transformer::setRequestKeys(array $reqKeys = [])** 
 
-	This method allows you to set the $request keys after you've already created an instance of  ```Ofelix03\Transformer\Transformer``` class.
-	**NB**: If this method is to be called, it should be called before calling ```Transformer::transform()```, else a run-time exception is thrown.
+	This method allows you to set the $request keys after you've already created an instance of  `Ofelix03\Transformer\Transformer` class.
+	**NB**: If this method is to be called, it should be called before calling `Transformer::transform()` else a run-time exception is thrown.
 
 * **Transformer::setMorphKeys(array $morphKeys = [])**
 
-	This method allows ou to set the keys that are to replace the $request keys during the transformation
+	This method allows you to set the keys that are to replace the $request keys during the transformation
 
 * **Transformer::setRequestPayload(array $data)** 
 
 	This is used to set the data that needs to be transformed. This can be used to override, the request data set during the construction of the transformer object. 
-	NB: Call this method before invoking `Tranformer::transform()`
+	**NB**: Call this method before invoking `Tranformer::transform()`
 
 * **Transformer::transform($reqPayload = [], $strictMode = false): array** 
 
-	This is the method that does the magic, transforming keys to other speicified keys. And also type casting, if specified.
+	This is the method that does the magic, transforming keys to other speicified keys. And also type casting values, if specified.
 
 	+ *$reqPayload*
 		This argument is optional. This is the data upon which the transformation is applied on, using the $requestKeys and $morphKeys definitions
 
 	+ *$strictMode*
-		This second argument indicates the mode used for the transformation. It's optional.
+		This second argument indicates the mode used for the transformation. It's optional. Remember this can also be set with the `Transformer::setStrict()` as discussed earlier.
 
 * **Transformer::getMorphedData(): array**
 
