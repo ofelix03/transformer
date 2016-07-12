@@ -18,7 +18,7 @@ class TypeCaster {
 		'array' => 'array',
 	];
 
-	static function cast($value, string $type) {
+	static function cast($value, $type = "") {
 		if (is_null($value)) {
 			throw new \InvalidArgumentException('A value is need for casting. First arugment should be a value to be casted');
 		}
