@@ -258,6 +258,7 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 ## Casting
 
 The following are the types currently supported for casting data.
+
 1. Integer (int)
 2. String (string)
 3. Array (array)
