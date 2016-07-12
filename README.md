@@ -144,6 +144,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 ## Usage
 
 ```php
+	
 	// Assume $data is the request data we expect to change, 
 	// some of it keys to some other keys
 
@@ -193,7 +194,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 ```
 
 ## Other API's on \Ofelix03\Transformer\Tranformer 
-* **Tranformer::isStrict()**
+* **Tranformer::isStrict(): bool**
 
 	This checks whether the tranformation should  be done in strict mode or not. Strict mode, first checks if the $reqKeys is equal in length to the $morphKeys and throws an exception if they are not.
 
@@ -201,7 +202,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 
 	This allows you to set the mode for the transformation. The default mode is ```FALSE```, if no argument is passed.
 
-* **Transformer::isTransformed() : bool**
+* **Transformer::isTransformed(): bool**
 
 	Checks whether  the data has already been transformed, this help save wasting resources, transforming data that has already been transformed.
 
@@ -219,7 +220,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 	This is used to set the data that needs to be transformed. This can be used to override, the request data set during the construction of the transformer object. 
 	NB: Call this method before invoking Tranformer::transform()
 
-* **Transformer::transform($reqPayload = [], $strictMode = false)** 
+* **Transformer::transform($reqPayload = [], $strictMode = false): array** 
 
 	This is the method that does the magic, transforming keys to other speicified keys. And also type casting, if speicified.
 
@@ -230,7 +231,7 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 		This second argument indicates the mode used for the transformation. 
 		It's optional.
 
-* **Transformer::getMorphedData() : array**
+* **Transformer::getMorphedData(): array**
 
 	This method is called after invoking ```Transformer::tranform()``` to get the transformed data (data with keys morphed into other keys)
 
