@@ -104,24 +104,6 @@ class Transformer {
 		$this->payload = $payload;
 	}
 
-	function preview() {
-		$compare = [];
-
-		for($index = 0; $index < $this->requestKeys->count(); $index++) {
-			$requestKey =  $this->requestKeys->get($index);
-			$morphKey =  $this->morphKeys->hasIndex($index) ? $this->morphKeys->get($index) : null;
-
-			$compare[$requestKey] = $morphKey;
-		}
-
-		echo "Request Key \t\t Morph Key \n";
-		foreach($compare as $reqKey => $morpKey) {
-			echo "------------------------------------\n";
-			echo "{$reqKey} ---------------------- {$morpKey}\n";
-		}
-		echo "-----------------------------------------\n";
-	}
-
 	function transform($payload = [], $strict = false) {
 		$this->setIsTransformed(true);
 
