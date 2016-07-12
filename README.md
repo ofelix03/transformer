@@ -42,11 +42,7 @@ Let first start with a code snippet that tries to present what we might normally
 	}
 
 	if (isset($data['pub_date'])) {
-		// Here, we want to do both key transformation 
-		// from 'pub_date' to a much concise, unambigious and readable 
-		// 'published_date' and also cast  the type of the 
-		// published date to a PHP \DateTime object;
-		$data['published_date'] = \DateTime($data['pub_date']);
+		$data['published_date'] = $data['pub_date'];
 		unset($data['pub_date']);
 	}
 
@@ -188,7 +184,17 @@ Now let try to use this pacakge to streamline and remove the clutter in the abov
 
 	$result = $transformer->transform();
 	
+	var_dump($result);
+
 	// $result should hold your transformed keys with their corresponding data
+	// This is the result of var_dump($result)
+	array (5) {
+		["title"] => string(15) "Some Post title"
+		["description"] => string(36) "Some post description here and there"
+		["published_status"] => bool(true)
+		["published_date"] => string(19) "20-06-2016 12:30:30"
+		["comments_count"] => int(0)
+	}
 
 ```
 
@@ -241,8 +247,7 @@ The following are the types currently supported for casting data.
 2. String (string)
 3. Array (array)
 4. Boolean (bool)
-5. Float (float)
 
-PHP's DateTime and Carbon will be supported in the  next release.
+PHP's [DateTime](http://php.net/manual/en/class.datetime.php "PHP DateTime Class") class and [Carbon](http://carbon.nesbot.com/ 'PHP Carbon Library') will be supported in the  next release. Other primitive types such as [double](http://php.net/manual/en/language.types.float.php "Dobule")(also known as float) and [object](http://php.net/manual/en/language.types.object.php "Object") will be supported with future releases.
 
 
