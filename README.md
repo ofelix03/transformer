@@ -1,11 +1,12 @@
 # Transformer
-A simple associative (i.e. a key:value pair) data transformer which transforms the key's of an array data to some  other specified keys. It also supports casting of data values to a specified PHP data type.
+A simple associative (i.e. a key:value pair) data transformer which transforms the keys of an array data to some  other specified keys. It also supports casting of data values to a specified type (e.g integer, boolean, string, \DateTime e.t.c)
 
-## What problems this package tries to solve
 
-1. Streamlining the process of transforming data keys 
-2. Reducing cluttering of application controller with data normalization activities such as keys transformation
-3. Upholding the [DRY](http://www.wikipedia/dry_principle "DRY") principle by employing classes for different data set key transformation.
+## What This Package Seeks To Achieve
+
+1. Streamlining the process of transforming data keys. 
+2. Reducing cluttering of application controller  and business logic with data normalization activities such as transformation of data keys.
+3. Upholding the [DRY](http://www.wikipedia/dry_principle "DRY") principle by employing classes for different data keys transformation.
 
 
 
@@ -14,7 +15,7 @@ A simple associative (i.e. a key:value pair) data transformer which transforms t
 Let first start with a code snippet that tries to present what we might normally do without this package.
 
 ```php
-	// An http request payload data from a POST request
+	// An http request payload from a POST request
 	$data = array(
 			'title' => 'Hey, am a title',
 			'description' => 'Hey, am simple description',
@@ -22,12 +23,10 @@ Let first start with a code snippet that tries to present what we might normally
 			'comments_count' => '10',
 		);
 
-
-	// In some project, where you have recieved an http request 
+	// In some projects, where you have received an http request 
 	// payload like the above, which needs to be normalized to 
-	// match some specific database field names. 
-
-	// The snippet below is a representation of what we might do without this package
+	// match some specific database field names, the snippet below
+	// is a representation of what we might do without this package
 	// (but with this package could be done much more fluently without    
 	// cluttering our application controller or codebase);
 
@@ -55,12 +54,12 @@ Let first start with a code snippet that tries to present what we might normally
 
 ```
 
-Now let try to use **Transformer** package to streamline and remove the clutter in the above code snippet, even keeping our code DRY, not copying and pasting implementation all over the place.
+Now let try to use **Transformer** package to streamline and remove the clutter in the above code snippet, even keeping our code [DRY](http://www.wikipedia/dry_principle "DRY") in the process.
 
 ```php
-	// Using the same $data as in the above snippet.
+	// Using the same payload($data) as in the above snippet.
 
-	// Here, we're using comoposer, hence we'll pull in composer's `venodor/autoload.php` to do it magic (autoloading)
+	// Here, we're using comoposer, hence we'll pull in composer's `vendor/autoload.php` to do it magic (autoloading)
 	require 'vendor/autoload.php';
 
 	// Also to use this library, we'll need the `Transformer` class
@@ -77,7 +76,7 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 	class PostTransformer extends Transformer {
  
 		// The return array contains the keys expected from the request 
-		// payload data (.i.e $data)
+		// payload (.i.e $data)
 		public function createRequestKeys() {
 			return array(
 					'title',
@@ -87,29 +86,28 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 				);
 		}
 
-		public function createMorphKeys(){ 
+		public function createMorphKeys() { 
 			return array(
 				'newTitle',
 				'text',
 				'published_date',  
-
 				// This will cast the type of the value to a an integer 
 				'comments_count:int' 
 				);
 		}
 	}
 
-	// Time to instantiate our new PostTransformer class, with the http request data ($data)
-	// we want to transform it keys, and hopefully do some casting on some values.
+	// Time to instantiate our new PostTransformer class, with the http request payload ($data)
+	// we want to transform it keys, and hopefully do some casting on some values that requires type casting.
 	$postTransformer = new PostTransformer($data);
 
-	// Now we transform the keys, and also cast some values in the process by invoking transform() on 
+	// Now we transform the keys, and perform any necessary casting in the process by invoking transform() on 
 	// $postTransformer like so:
 	$result = $postTransformer->transform();
 	
 	var_dump($result);
 
-	// This should be the output of the var_dump
+	// This should be the output of the var_dump method
 	array (5) {
 		["title"] => string(15) "Some Post title"
 		["description"] => string(36) "Some post description here and there"
@@ -132,10 +130,11 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 2. **Use github clone**
 	You can also clone the github repository for this package
 
-	Simply run the following commands in your terminal. Make sure you already have git environment set up on your machine.
+	Simply follow the laid out steps below. Make sure you already have git environment set up on your machine. You can checkout how to do so on Git's [official site](http://www.git-scm.com "Git official site") 
 
 	+ **Step 1**
 
+		Open your terminal and run the `git clone` command below:
 		```php
 			git clone https:\\www.github.com\ofelix03\transformer.git
 		```
@@ -155,8 +154,8 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 
 ```php
 	
-	// Assume $data is the request data we expect to change, 
-	// some of it keys to some other keys
+	// Assume $data is the request payload that requires some of it's keys 
+	// to be morphed into other keys
 
 	$data = array(
 		'title' => 'Some Post Title',
@@ -165,7 +164,6 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 		'pub_dat' => '20-06-2016 12:30:30',
 		'comments_count => '10'
 	);
-
 
 	// Here, $reqKeys list the keys in $data which are going to 
 	// be transformed to some other keys
@@ -177,12 +175,11 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 		'comments_count'
 	);
 
-
 	// $morpKeys holds a sequential listing of keys which 
 	// are to replace the keys speicified in the $reqKeys. 
 	// The listing should parrallel to that found in $reqKeys.
 
-	// NB: Any key specified in $reqKeys that has no matching 
+	// **NB**: Any key specified in $reqKeys that has no matching 
 	// index position in the $morpKeys array is skipped
 
 	$morphKeys = array(
@@ -192,8 +189,8 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 		'comments_cout:int'
 	);
 
-	// Time to transform some keys using the \ofelix03\Transformer\Transformer class 
-	// NB: Make sure to autoload the class before using it, else it would not work. 
+	// Time to transform some keys using the `\ofelix03\Transformer\Transformer` class 
+	// **NB**: Make sure to autoload the class before using it, else it would not work. 
 
 	$transformer = new \Ofelix03\Transformer\Transformer($data, $reqKeys, $morphKeys);
 
@@ -201,7 +198,7 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 	
 	var_dump($result);
 
-	// $result should hold your transformed keys with their corresponding data
+	// $result should now hold your transformed keys with their corresponding values
 	// This is the result of var_dump($result)
 	array (5) {
 		["title"] => string(15) "Some Post title"
@@ -216,7 +213,7 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 ## Other API's on \Ofelix03\Transformer\Tranformer 
 * **Tranformer::isStrict(): bool**
 
-	This checks whether the transformation should  be done in strict mode or not. Strict mode, first checks if the $reqKeys is equal in length to the $morphKeys and throws an exception if they are not. Returns boolean (TRUE|FALSE).
+	This checks whether the transformation should  be done in strict mode or not. Strict mode, first checks if the `$reqKeys` is equal in length to the `$morphKeys` and throws an exception if they are not. Returns boolean (TRUE|FALSE).
 
 * **Transformer::setStrict($mode = false)**
 
@@ -237,22 +234,22 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 
 * **Transformer::setRequestPayload(array $data)** 
 
-	This is used to set the data that needs to be transformed. This can be used to override, the request data set during the construction of the transformer object. 
+	This is used to set the data that needs to be transformed. This can be used to override the request data set during the construction of the transformer object. 
 	**NB**: Call this method before invoking `Tranformer::transform()`
 
 * **Transformer::transform($reqPayload = [], $strictMode = false): array** 
 
-	This is the method that does the magic, transforming keys to other speicified keys. And also type casting values, if specified.
+	This is the method that does the magic -- transforming keys to other speicified keys. And also perform type casting if necessary.
 
 	+ *$reqPayload*
-		This argument is optional. This is the data upon which the transformation is applied on, using the $requestKeys and $morphKeys definitions
+		This argument is optional. It's the data upon which the transformation is applied on, using the $requestKeys and $morphKeys definitions
 
 	+ *$strictMode*
 		This second argument indicates the mode used for the transformation. It's optional. Remember this can also be set with the `Transformer::setStrict()` as discussed earlier.
 
 * **Transformer::getMorphedData(): array**
 
-	This method is called after invoking ```Transformer::tranform()``` to get the transformed data (data with keys morphed into other keys)
+	This method is called after invoking ```Transformer::tranform()``` to get the transformed data (data with it's keys morphed into other keys).
 
 
 ## Casting
@@ -263,6 +260,8 @@ The following are the types currently supported for casting data.
 2. String (string)
 3. Array (array)
 4. Boolean (bool)
+
+## Feature Features
 
 PHP's [DateTime](http://php.net/manual/en/class.datetime.php "PHP DateTime Class") class and [Carbon](http://carbon.nesbot.com/ 'PHP Carbon Library') will be supported in the  next release. Other primitive types such as [double](http://php.net/manual/en/language.types.float.php "Dobule")(also known as float) and [object](http://php.net/manual/en/language.types.object.php "Object") will be supported with future releases.
 
