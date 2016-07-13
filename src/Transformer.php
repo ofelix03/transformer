@@ -109,7 +109,7 @@ class Transformer {
 
 		if (count($payload)) {
 			$this->payload = $payload;
-		} else if (!count($this->payload)) {
+		} else if ( ! count($this->payload)) {
 			throw new \Exception('A payload is need for the transformation');
 		}
 
@@ -122,7 +122,7 @@ class Transformer {
 		}
 
 		if ($this->isStrict() || $strict === true) {
-			if (!$this->requestKeys->hasEqualLength($this->morphKeys)) {
+			if ( ! $this->requestKeys->hasEqualLength($this->morphKeys)) {
 				throw new \Exception("The request key and morph bags are not equal in length");
 			}
 		}
@@ -153,7 +153,7 @@ class Transformer {
 	}
 
 	function getMorphedData() {
-		if (!$this->isTransformed()) {
+		if ( ! $this->isTransformed()) {
 			throw new \Exception("You have to run " + __CLASS__ + "::" + __METHOD__ + " before calling this method");
 		} 
 
