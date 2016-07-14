@@ -27,12 +27,12 @@ Let first start with a code snippet that tries to present what we might normally
 	// payload like the above, which needs to be normalized to 
 	// match some specific database field names, the snippet below
 	// is a representation of what we might do without this package
-	// (but with this package could be done much more fluently without    
+	// (but with this package could have been done much more fluently without    
 	// cluttering our application controller or codebase);
 
 	if (isset($data['title'])) {
 		$data['newTitle'] = $data['title']
-		unset($dat['title']);
+		unset($data['title']);
 	}
 
 	if (isset($data['description'])) {
@@ -54,28 +54,33 @@ Let first start with a code snippet that tries to present what we might normally
 
 ```
 
-Now let try to use **Transformer** package to streamline and remove the clutter in the above code snippet, even keeping our code [DRY](http://www.wikipedia/dry_principle "DRY") in the process.
+Now let's try to use **Transformer** package to streamline and remove the clutter in the 
+above code snippet, even keeping our code [DRY](http://www.wikipedia/dry_principle "DRY") in the process.
 
 ```php
 	// Using the same payload($data) as in the above snippet.
 
-	// Here, we're using comoposer, hence we'll pull in composer's `vendor/autoload.php` to do it magic (autoloading)
+	// Here, we're using composer, hence we'll pull in composer's `vendor/autoload.php` 
+	// file to do it magic (autoloading)
 	require 'vendor/autoload.php';
 
-	// Also to use this library, we'll need the `Transformer` class
+	// Also, to use this library, we'll need the `Transformer` class, so will pull it
+	// in like so:
 	use Ofelix03\Transformer\Transformer
 
 	// We first create a class PostTransformer that tailors our transformation 
-	// to our business model.
+	// to our business model. This approach is recommend if we intend to use our 
+	// transform the same data set (payload) in different locations in our code base
 
-	// PostTransformer is suppose to implement just 2 methods 
+	// PostTransformer is suppose to implement just 2 public methods 
 	// 1. createRequestKeys
 	// 2. createMorphKeys
-	// Both methods returns an array of key definitions which represent the definitions of 'requestKeys' and 'morphKeys' as we will see in the code snippet below.
+	// Both methods returns an array of key definitions which represent the definitions
+	// of 'requestKeys' and 'morphKeys' as we will see in the code snippet below.
 
 	class PostTransformer extends Transformer {
  
-		// The return array contains the keys expected from the request 
+		// The returned array contains the keys expected from the request 
 		// payload (.i.e $data)
 		public function createRequestKeys() {
 			return array(
@@ -86,6 +91,8 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 				);
 		}
 
+		// The returned array contains keys expected to replace the 
+		// specified keys in the createRequestKeys() in positional indexing order
 		public function createMorphKeys() { 
 			return array(
 				'newTitle',
@@ -97,17 +104,18 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 		}
 	}
 
-	// Time to instantiate our new PostTransformer class, with the http request payload ($data)
-	// we want to transform it keys, and hopefully do some casting on some values that requires type casting.
+	// Time to instantiate our new PostTransformer class, with the http request 
+	// payload ($data) we want to transform it keys, and hopefully do some casting
+	// on some values that requires type casting.
 	$postTransformer = new PostTransformer($data);
 
-	// Now we transform the keys, and perform any necessary casting in the process by invoking transform() on 
-	// $postTransformer like so:
+	// Now we transform the keys, and perform any necessary casting by invoking 
+	// transform() on $postTransformer like so:
 	$result = $postTransformer->transform();
 	
 	var_dump($result);
 
-	// This should be the output of the var_dump method
+	// This should be the output of var_dump() the $result
 	array (5) {
 		["title"] => string(15) "Some Post title"
 		["description"] => string(36) "Some post description here and there"
@@ -123,11 +131,22 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 ## Installation
 1. **Using composer**
 
-	``` composer require ofelix03\transformer ```
+	``` composer require Ofelix03\Transformer ```
 
 	__NB__: Make sure to ``` require vendor\autoload.php ``` at the top of the the file you want to use the transformer package in.
+	Exampe: Assuming I'm using this package in a file named `main.php`, this is what my `main.php` file would look like:
 
-2. **Use github clone**
+	```php
+		require "vendor/autoload.php";
+
+		use Ofelix03\Transformer\Transformer;
+
+		// Your code to use the Transformer class goes here.
+		// Example:
+		$transformedData = (new Transformer())->transform($payload, $reqKeys, $morphKeys);
+	```
+
+2. **Using github clone**
 	You can also clone the github repository for this package
 
 	Simply follow the laid out steps below. Make sure you already have git environment set up on your machine. You can checkout how to do so on Git's [official site](http://www.git-scm.com "Git official site") 
@@ -144,9 +163,9 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 		Copy the php files inside ```src``` directory to any location in your app directory structure and require them in this order:
 
 		```php
-			require 'app\root\folder\transformer\TypeCaster.php';
-			require 'app\root\folder\transformer\KeysBag.php';
-			require 'app\root\folder\transformer\Transformer.php';
+			require 'app/root/folder/transformer/src/TypeCaster.php';
+			require 'app/root/folder/transformer/src/KeysBag.php';
+			require 'app/root/folder/transformer/src/Transformer.php';
 		```
 
 
@@ -154,20 +173,20 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 
 ```php
 	
-	// Assume $data is the request payload that requires some of it's keys 
-	// to be morphed into other keys
-
+	// Assume $data is the request payload that requires some of its keys 
+	// to be morphed into other keys.
+	// This can be an http request payload or data set query from a database
+	// or any  data source.
 	$data = array(
 		'title' => 'Some Post Title',
 		'description' => 'Some post description here and there',
 		'pub_status' => '1',
-		'pub_dat' => '20-06-2016 12:30:30',
+		'pub_date' => '20-06-2016 12:30:30',
 		'comments_count => '10'
 	);
 
 	// Here, $reqKeys list the keys in $data which are going to 
-	// be transformed to some other keys
-
+	// be transformed to some other keys defined by the $morphKeys
 	$reqKeys = array(
 		'description',
 		'pub_status',
@@ -176,12 +195,9 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 	);
 
 	// $morpKeys holds a sequential listing of keys which 
-	// are to replace the keys speicified in the $reqKeys. 
-	// The listing should parrallel to that found in $reqKeys.
-
-	// **NB**: Any key specified in $reqKeys that has no matching 
-	// index position in the $morpKeys array is skipped
-
+	// are to replace the keys specified in the $reqKeys. 
+	// The key listings should be have the same index position has the key it 
+	// would replace in the $reqKeys
 	$morphKeys = array(
 		'text',
 		'published_status:bool',
@@ -189,8 +205,9 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 		'comments_cout:int'
 	);
 
-	// Time to transform some keys using the `\ofelix03\Transformer\Transformer` class 
-	// **NB**: Make sure to autoload the class before using it, else it would not work. 
+	// Time to transform some keys using the `\Ofelix03\Transformer\Transformer` class 
+	// **NB**: Make sure to autoload `\Ofelix03\Transformer\Transformer` class before using it, 
+	// else it would not work. 
 
 	$transformer = new \Ofelix03\Transformer\Transformer($data, $reqKeys, $morphKeys);
 
@@ -213,7 +230,8 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 ## Other API's on \Ofelix03\Transformer\Tranformer 
 * **Tranformer::isStrict(): bool**
 
-	This checks whether the transformation should  be done in strict mode or not. Strict mode, first checks if the `$reqKeys` is equal in length to the `$morphKeys` and throws an exception if they are not. Returns boolean (TRUE|FALSE).
+	This checks whether the transformation should  be done in strict mode or not. Returns boolean (TRUE|FALSE).
+	In strict mode, the library checks if the `$reqKeys` is equal in length to the `$morphKeys` and throws an exception if they are not.
 
 * **Transformer::setStrict($mode = false)**
 
@@ -225,7 +243,7 @@ Now let try to use **Transformer** package to streamline and remove the clutter 
 
 * **Transformer::setRequestKeys(array $reqKeys = [])** 
 
-	This method allows you to set the $request keys after you've already created an instance of  `Ofelix03\Transformer\Transformer` class.
+	This method allows you to define the $request keys after you've already created an instance of  `Ofelix03\Transformer\Transformer` class.
 	**NB**: If this method is to be called, it should be called before calling `Transformer::transform()` else a run-time exception is thrown.
 
 * **Transformer::setMorphKeys(array $morphKeys = [])**
@@ -266,3 +284,9 @@ The following are the types currently supported for casting data.
 PHP's [DateTime](http://php.net/manual/en/class.datetime.php "PHP DateTime Class") class and [Carbon](http://carbon.nesbot.com/ 'PHP Carbon Library') will be supported in the  next release. Other primitive types such as [double](http://php.net/manual/en/language.types.float.php "Dobule")(also known as float) and [object](http://php.net/manual/en/language.types.object.php "Object") will be supported with future releases.
 
 
+## Contributing
+
+You can help improve this docs by sending me a pull request and hopefully I will merge it in. 
+Also, you spotted an error (syntax or logic error) ? I will be glad to recieve a pull request of a fix of that 
+error. But I would love it if you first open an issue and hopefully if it's not already in the pipes of resolution
+by me or someone else, I will gladly assign it to you.
