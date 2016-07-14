@@ -22,23 +22,23 @@
       <h1>
 <a id="transformer" class="anchor" href="#transformer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Transformer</h1>
 
-<p>A simple associative (i.e. a key:value pair) data transformer which transforms the key's of an array data to some  other specified keys. It also supports casting of data values to a specified PHP data type.</p>
+<p>A simple associative (i.e. a key:value pair) data transformer which transforms the keys of an array data to some  other specified keys. It also supports casting of data values to a specified type (e.g integer, boolean, string, \DateTime e.t.c)</p>
 
 <h2>
-<a id="what-problems-this-package-tries-to-solve" class="anchor" href="#what-problems-this-package-tries-to-solve" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What problems this package tries to solve</h2>
+<a id="what-this-package-seeks-to-achieve" class="anchor" href="#what-this-package-seeks-to-achieve" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>What This Package Seeks To Achieve</h2>
 
 <ol>
-<li>Streamlining the process of transforming data keys </li>
-<li>Reducing cluttering of application controller with data normalization activities such as keys transformation</li>
-<li>Upholding the <a href="http://www.wikipedia/dry_principle" title="DRY">DRY</a> principle by employing classes for different data set key transformation.</li>
+<li>Streamlining the process of transforming data keys. </li>
+<li>Reducing cluttering of application controller  and business logic with data normalization activities such as transformation of data keys.</li>
+<li>Upholding the <a href="http://www.wikipedia/dry_principle" title="DRY">DRY</a> principle by employing classes for different data keys transformation.</li>
 </ol>
 
 <h2>
-<a id="code-to-support-the-above-claims" class="anchor" href="#code-to-support-the-above-claims" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Code to support the above claims</h2>
+<a id="codes-to-support-the-packages-claims" class="anchor" href="#codes-to-support-the-packages-claims" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Codes To Support The Package's Claims</h2>
 
 <p>Let first start with a code snippet that tries to present what we might normally do without this package.</p>
 
-<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// An http request payload data from a POST request</span></span>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// An http request payload from a POST request</span></span>
 <span class="pl-s1">    <span class="pl-smi">$data</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>(</span>
 <span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Hey, am a title<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>description<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Hey, am simple description<span class="pl-pds">'</span></span>,</span>
@@ -46,12 +46,10 @@
 <span class="pl-s1">            <span class="pl-s"><span class="pl-pds">'</span>comments_count<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>10<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1">        );</span>
 <span class="pl-s1"></span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// In some project, where you have recieved an http request </span></span>
+<span class="pl-s1">    <span class="pl-c">// In some projects, where you have received an http request </span></span>
 <span class="pl-s1">    <span class="pl-c">// payload like the above, which needs to be normalized to </span></span>
-<span class="pl-s1">    <span class="pl-c">// match some specific database field names. </span></span>
-<span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// The snippet below is a representation of what we might do without this package</span></span>
+<span class="pl-s1">    <span class="pl-c">// match some specific database field names, the snippet below</span></span>
+<span class="pl-s1">    <span class="pl-c">// is a representation of what we might do without this package</span></span>
 <span class="pl-s1">    <span class="pl-c">// (but with this package could be done much more fluently without    </span></span>
 <span class="pl-s1">    <span class="pl-c">// cluttering our application controller or codebase);</span></span>
 <span class="pl-s1"></span>
@@ -78,11 +76,11 @@
 <span class="pl-s1">    <span class="pl-c">// Now $data contains the transformed keys with their associated data</span></span>
 <span class="pl-s1"></span></pre></div>
 
-<p>Now let try to use <strong>Transformer</strong> package to streamline and remove the clutter in the above code snippet, even keeping our code DRY, not copying and pasting implementation all over the place.</p>
+<p>Now let try to use <strong>Transformer</strong> package to streamline and remove the clutter in the above code snippet, even keeping our code <a href="http://www.wikipedia/dry_principle" title="DRY">DRY</a> in the process.</p>
 
-<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// Using the same $data as in the above snippet.</span></span>
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c">// Using the same payload($data) as in the above snippet.</span></span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// Here, we're using comoposer, hence we'll pull in composer's `venodor/autoload.php` to do it magic (autoloading)</span></span>
+<span class="pl-s1">    <span class="pl-c">// Here, we're using comoposer, hence we'll pull in composer's `vendor/autoload.php` to do it magic (autoloading)</span></span>
 <span class="pl-s1">    <span class="pl-k">require</span> <span class="pl-s"><span class="pl-pds">'</span>vendor/autoload.php<span class="pl-pds">'</span></span>;</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c">// Also to use this library, we'll need the `Transformer` class</span></span>
@@ -99,7 +97,7 @@
 <span class="pl-s1">    <span class="pl-k">class</span> <span class="pl-en">PostTransformer</span> <span class="pl-k">extends</span> <span class="pl-e">Transformer</span> {</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">        <span class="pl-c">// The return array contains the keys expected from the request </span></span>
-<span class="pl-s1">        <span class="pl-c">// payload data (.i.e $data)</span></span>
+<span class="pl-s1">        <span class="pl-c">// payload (.i.e $data)</span></span>
 <span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">createRequestKeys</span>() {</span>
 <span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
 <span class="pl-s1">                    <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span>,</span>
@@ -109,29 +107,28 @@
 <span class="pl-s1">                );</span>
 <span class="pl-s1">        }</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">createMorphKeys</span>(){ </span>
+<span class="pl-s1">        <span class="pl-k">public</span> <span class="pl-k">function</span> <span class="pl-en">createMorphKeys</span>() { </span>
 <span class="pl-s1">            <span class="pl-k">return</span> <span class="pl-c1">array</span>(</span>
 <span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>newTitle<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>text<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>published_date<span class="pl-pds">'</span></span>,  </span>
-<span class="pl-s1"></span>
 <span class="pl-s1">                <span class="pl-c">// This will cast the type of the value to a an integer </span></span>
 <span class="pl-s1">                <span class="pl-s"><span class="pl-pds">'</span>comments_count:int<span class="pl-pds">'</span></span> </span>
 <span class="pl-s1">                );</span>
 <span class="pl-s1">        }</span>
 <span class="pl-s1">    }</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// Time to instantiate our new PostTransformer class, with the http request data ($data)</span></span>
-<span class="pl-s1">    <span class="pl-c">// we want to transform it keys, and hopefully do some casting on some values.</span></span>
+<span class="pl-s1">    <span class="pl-c">// Time to instantiate our new PostTransformer class, with the http request payload ($data)</span></span>
+<span class="pl-s1">    <span class="pl-c">// we want to transform it keys, and hopefully do some casting on some values that requires type casting.</span></span>
 <span class="pl-s1">    <span class="pl-smi">$postTransformer</span> <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-c1">PostTransformer</span>(<span class="pl-smi">$data</span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// Now we transform the keys, and also cast some values in the process by invoking transform() on </span></span>
+<span class="pl-s1">    <span class="pl-c">// Now we transform the keys, and perform any necessary casting in the process by invoking transform() on </span></span>
 <span class="pl-s1">    <span class="pl-c">// $postTransformer like so:</span></span>
 <span class="pl-s1">    <span class="pl-smi">$result</span> <span class="pl-k">=</span> <span class="pl-smi">$postTransformer</span><span class="pl-k">-&gt;</span>transform();</span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-c1">var_dump</span>(<span class="pl-smi">$result</span>);</span>
 <span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// This should be the output of the var_dump</span></span>
+<span class="pl-s1">    <span class="pl-c">// This should be the output of the var_dump method</span></span>
 <span class="pl-s1">    <span class="pl-k">array</span> (<span class="pl-c1">5</span>) {</span>
 <span class="pl-s1">        [<span class="pl-s"><span class="pl-pds">"</span>title<span class="pl-pds">"</span></span>] <span class="pl-k">=&gt;</span> <span class="pl-k">string</span>(<span class="pl-c1">15</span>) <span class="pl-s"><span class="pl-pds">"</span>Some Post title<span class="pl-pds">"</span></span></span>
 <span class="pl-s1">        [<span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span>] <span class="pl-k">=&gt;</span> <span class="pl-k">string</span>(<span class="pl-c1">36</span>) <span class="pl-s"><span class="pl-pds">"</span>Some post description here and there<span class="pl-pds">"</span></span></span>
@@ -156,11 +153,13 @@
 <p><strong>Use github clone</strong>
 You can also clone the github repository for this package</p>
 
-<p>Simply run the following commands in your terminal. Make sure you already have git environment set up on your machine.</p>
+<p>Simply follow the laid out steps below. Make sure you already have git environment set up on your machine. You can checkout how to do so on Git's <a href="http://www.git-scm.com" title="Git official site">official site</a> </p>
 
 <ul>
 <li>
 <p><strong>Step 1</strong></p>
+
+<p>Open your terminal and run the <code>git clone</code> command below:</p>
 
 <div class="highlight highlight-text-html-php"><pre><span class="pl-s1">    <span class="pl-c1">git</span> <span class="pl-k">clone</span> <span class="pl-c1">https</span>:\\<span class="pl-c1">www</span><span class="pl-k">.</span><span class="pl-c1">github</span><span class="pl-k">.</span><span class="pl-c1">com\ofelix03\</span><span class="pl-c1">transformer</span><span class="pl-k">.</span><span class="pl-c1">git</span></span></pre></div>
 </li>
@@ -181,8 +180,8 @@ You can also clone the github repository for this package</p>
 <a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
 
 <div class="highlight highlight-text-html-php"><pre><span class="pl-s1"></span>
-<span class="pl-s1">    <span class="pl-c">// Assume $data is the request data we expect to change, </span></span>
-<span class="pl-s1">    <span class="pl-c">// some of it keys to some other keys</span></span>
+<span class="pl-s1">    <span class="pl-c">// Assume $data is the request payload that requires some of it's keys </span></span>
+<span class="pl-s1">    <span class="pl-c">// to be morphed into other keys</span></span>
 <span class="pl-s1"></span>
 <span class="pl-s1">    <span class="pl-smi">$data</span> <span class="pl-k">=</span> <span class="pl-c1">array</span>(</span>
 <span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>title<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>Some Post Title<span class="pl-pds">'</span></span>,</span>
@@ -191,7 +190,6 @@ You can also clone the github repository for this package</p>
 <span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>pub_dat<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>20-06-2016 12:30:30<span class="pl-pds">'</span></span>,</span>
 <span class="pl-s1">        <span class="pl-s"><span class="pl-pds">'</span>comments_count =&gt; <span class="pl-pds">'</span></span><span class="pl-c1">10</span><span class="pl-s"><span class="pl-pds">'</span></span></span>
 <span class="pl-s1"><span class="pl-s">    );</span></span>
-<span class="pl-s1"><span class="pl-s"></span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
 <span class="pl-s1"><span class="pl-s">    // Here, $reqKeys list the keys in $data which are going to </span></span>
 <span class="pl-s1"><span class="pl-s">    // be transformed to some other keys</span></span>
@@ -203,12 +201,11 @@ You can also clone the github repository for this package</p>
 <span class="pl-s1"><span class="pl-s">        <span class="pl-pds">'</span></span><span class="pl-c1">comments_count</span><span class="pl-s"><span class="pl-pds">'</span></span></span>
 <span class="pl-s1"><span class="pl-s">    );</span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
-<span class="pl-s1"><span class="pl-s"></span></span>
 <span class="pl-s1"><span class="pl-s">    // $morpKeys holds a sequential listing of keys which </span></span>
 <span class="pl-s1"><span class="pl-s">    // are to replace the keys speicified in the $reqKeys. </span></span>
 <span class="pl-s1"><span class="pl-s">    // The listing should parrallel to that found in $reqKeys.</span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
-<span class="pl-s1"><span class="pl-s">    // NB: Any key specified in $reqKeys that has no matching </span></span>
+<span class="pl-s1"><span class="pl-s">    // **NB**: Any key specified in $reqKeys that has no matching </span></span>
 <span class="pl-s1"><span class="pl-s">    // index position in the $morpKeys array is skipped</span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
 <span class="pl-s1"><span class="pl-s">    $morphKeys = array(</span></span>
@@ -218,8 +215,8 @@ You can also clone the github repository for this package</p>
 <span class="pl-s1"><span class="pl-s">        <span class="pl-pds">'</span></span><span class="pl-c1">comments_cout</span>:<span class="pl-k">int</span><span class="pl-s"><span class="pl-pds">'</span></span></span>
 <span class="pl-s1"><span class="pl-s">    );</span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
-<span class="pl-s1"><span class="pl-s">    // Time to transform some keys using the \ofelix03\Transformer\Transformer class </span></span>
-<span class="pl-s1"><span class="pl-s">    // NB: Make sure to autoload the class before using it, else it would not work. </span></span>
+<span class="pl-s1"><span class="pl-s">    // Time to transform some keys using the `\ofelix03\Transformer\Transformer` class </span></span>
+<span class="pl-s1"><span class="pl-s">    // **NB**: Make sure to autoload the class before using it, else it would not work. </span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
 <span class="pl-s1"><span class="pl-s">    $transformer = new \Ofelix03\Transformer\Transformer($data, $reqKeys, $morphKeys);</span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
@@ -227,7 +224,7 @@ You can also clone the github repository for this package</p>
 <span class="pl-s1"><span class="pl-s"></span></span>
 <span class="pl-s1"><span class="pl-s">    var_dump($result);</span></span>
 <span class="pl-s1"><span class="pl-s"></span></span>
-<span class="pl-s1"><span class="pl-s">    // $result should hold your transformed keys with their corresponding data</span></span>
+<span class="pl-s1"><span class="pl-s">    // $result should now hold your transformed keys with their corresponding values</span></span>
 <span class="pl-s1"><span class="pl-s">    // This is the result of var_dump($result)</span></span>
 <span class="pl-s1"><span class="pl-s">    array (5) {</span></span>
 <span class="pl-s1"><span class="pl-s">        ["title"] =&gt; string(15) "Some Post title"</span></span>
@@ -245,7 +242,7 @@ You can also clone the github repository for this package</p>
 <li>
 <p><strong>Tranformer::isStrict(): bool</strong></p>
 
-<p>This checks whether the transformation should  be done in strict mode or not. Strict mode, first checks if the $reqKeys is equal in length to the $morphKeys and throws an exception if they are not. Returns boolean (TRUE|FALSE).</p>
+<p>This checks whether the transformation should  be done in strict mode or not. Strict mode, first checks if the <code>$reqKeys</code> is equal in length to the <code>$morphKeys</code> and throws an exception if they are not. Returns boolean (TRUE|FALSE).</p>
 </li>
 <li>
 <p><strong>Transformer::setStrict($mode = false)</strong></p>
@@ -271,17 +268,17 @@ You can also clone the github repository for this package</p>
 <li>
 <p><strong>Transformer::setRequestPayload(array $data)</strong> </p>
 
-<p>This is used to set the data that needs to be transformed. This can be used to override, the request data set during the construction of the transformer object. 
+<p>This is used to set the data that needs to be transformed. This can be used to override the request data set during the construction of the transformer object. 
 <strong>NB</strong>: Call this method before invoking <code>Tranformer::transform()</code></p>
 </li>
 <li>
 <p><strong>Transformer::transform($reqPayload = [], $strictMode = false): array</strong> </p>
 
-<p>This is the method that does the magic, transforming keys to other speicified keys. And also type casting values, if specified.</p>
+<p>This is the method that does the magic -- transforming keys to other speicified keys. And also perform type casting if necessary.</p>
 
 <ul>
 <li><p><em>$reqPayload</em>
-This argument is optional. This is the data upon which the transformation is applied on, using the $requestKeys and $morphKeys definitions</p></li>
+This argument is optional. It's the data upon which the transformation is applied on, using the $requestKeys and $morphKeys definitions</p></li>
 <li><p><em>$strictMode</em>
 This second argument indicates the mode used for the transformation. It's optional. Remember this can also be set with the <code>Transformer::setStrict()</code> as discussed earlier.</p></li>
 </ul>
@@ -289,7 +286,7 @@ This second argument indicates the mode used for the transformation. It's option
 <li>
 <p><strong>Transformer::getMorphedData(): array</strong></p>
 
-<p>This method is called after invoking <code>Transformer::tranform()</code> to get the transformed data (data with keys morphed into other keys)</p>
+<p>This method is called after invoking <code>Transformer::tranform()</code> to get the transformed data (data with it's keys morphed into other keys).</p>
 </li>
 </ul>
 
@@ -304,6 +301,9 @@ This second argument indicates the mode used for the transformation. It's option
 <li>Array (array)</li>
 <li>Boolean (bool)</li>
 </ol>
+
+<h2>
+<a id="feature-features" class="anchor" href="#feature-features" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Feature Features</h2>
 
 <p>PHP's <a href="http://php.net/manual/en/class.datetime.php" title="PHP DateTime Class">DateTime</a> class and <a href="http://carbon.nesbot.com/" title="PHP Carbon Library">Carbon</a> will be supported in the  next release. Other primitive types such as <a href="http://php.net/manual/en/language.types.float.php" title="Dobule">double</a>(also known as float) and <a href="http://php.net/manual/en/language.types.object.php" title="Object">object</a> will be supported with future releases.</p>
 
