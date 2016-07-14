@@ -10,7 +10,7 @@ A simple associative (i.e. a key:value pair) data transformer which transforms t
 
 
 
-## Code to support the above claims
+## Codes To Support The Package's Claims
 
 Let first start with a code snippet that tries to present what we might normally do without this package.
 
