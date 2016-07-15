@@ -25,7 +25,7 @@
   "repositories": [
     {
       "type": "vcs",
-      "url": "https://github.com/Seldaek/monolog"
+      "url": "https://github.com/ofelix03/transformer"
     }
   ],
   "minimum-stability": "dev"

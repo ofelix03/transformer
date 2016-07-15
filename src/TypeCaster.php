@@ -1,6 +1,7 @@
 <?php
 
 namespace Ofelix03\Transformer;
+use Ofelix03\Transformer\TypeCasters;
 
 /** 
  * @author Felix Otoo <ofelix03@gmail.com>
@@ -11,11 +12,14 @@ namespace Ofelix03\Transformer;
 class TypeCaster {
 
 	const CAST_TYPES = [
-		'integer' => 'int',
-		'string' => 'string',
-		'float' => 'float',
-		'bool' => 'bool',
-		'array' => 'array',
+	'integer' => 'int',
+	'string' => 'string',
+	'float' => 'float',
+	'double' => 'double',
+	'bool' => 'bool',
+	'array' => 'array',
+	'dateTime' => 'dateTime',
+	'carbonDateTime' => 'carbonDateTime',
 	];
 
 	static function cast($value, $type = "") {
@@ -35,6 +39,11 @@ class TypeCaster {
 			return (bool) $value;
 		} else if (static::CAST_TYPES['array'] === $type) {
 			return (array) $value;
+		} else if (static::CAST_TYPES['float'] === $typeb  
+			|| static::CAST_TYPES['double'] === $type) {
+			return (double) $value;
+		} else if (static::CAST_TYPES['dateTime'] === $type) {
+			return new \DateTime($value);
 		}
 	}
 }
