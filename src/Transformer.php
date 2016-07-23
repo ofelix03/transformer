@@ -8,6 +8,8 @@ namespace Ofelix03\Transformer;
  *          	the copyright agreements.
  */
 
+use RuntimeException;
+
 class Transformer {
 
 	/** @var \KeysBag The keys expected in the request data */
@@ -110,20 +112,20 @@ class Transformer {
 		if (count($payload)) {
 			$this->payload = $payload;
 		} else if ( ! count($this->payload)) {
-			throw new \Exception('A payload is need for the transformation');
+			throw new RuntimeException('A payload is need for the transformation');
 		}
 
 		if ($this->requestKeys->count() == 0) {
-			throw new \Exception('A request definition is need for the tranformation');
+			throw new RuntimeException('A request definition is need for the tranformation');
 		}
 
 		if ($this->morphKeys->count() == 0) {
-			throw new \Exception('A morph definition is need for the transformation');
+			throw new RuntimeException('A morph definition is need for the transformation');
 		}
 
 		if ($this->isStrict() || $strict === true) {
 			if ( ! $this->requestKeys->hasEqualLength($this->morphKeys)) {
-				throw new \Exception("The request key and morph bags are not equal in length");
+				throw new RuntimeException("The request key and morph bags are not equal in length");
 			}
 		}
 
@@ -132,7 +134,7 @@ class Transformer {
 				$mKey = $this->morphKeys->get($this->requestKeys->getIndex($key));
 				if ($this->hasTypeCast($mKey)) {
 					list($mKey, $type) = explode(':', $mKey);
-					$this->morphedPayload[$mKey] = TypeCaster::cast($mKey, $type);
+					$this->morphedPayload[$mKey] = TypeCaster::cast($value, $type);
 				} else {
 					$this->morphedPayload[$mKey] = $value;
 				}
@@ -154,7 +156,7 @@ class Transformer {
 
 	function getMorphedData() {
 		if ( ! $this->isTransformed()) {
-			throw new \Exception("You have to run " + __CLASS__ + "::" + __METHOD__ + " before calling this method");
+			throw new RuntimeException("You have to run " + __CLASS__ + "::" + __METHOD__ + " before calling this method");
 		} 
 
 		return $this->morphedPayload;
