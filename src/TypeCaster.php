@@ -1,13 +1,16 @@
 <?php
 
 namespace Ofelix03\Transformer;
-use Ofelix03\Transformer\TypeCasters;
 
 /** 
  * @author Felix Otoo <ofelix03@gmail.com>
  * @license MIT Check the license file associated with this package for detials of 
  *          	the copyright agreements.
  */
+
+ use DateTime;
+ use InvalidArgumentException;
+
 
 class TypeCaster {
 
@@ -19,16 +22,15 @@ class TypeCaster {
 	'bool' => 'bool',
 	'array' => 'array',
 	'dateTime' => 'dateTime',
-	'carbonDateTime' => 'carbonDateTime',
 	];
 
 	static function cast($value, $type = "") {
 		if (is_null($value)) {
-			throw new \InvalidArgumentException('A value is need for casting. First arugment should be a value to be casted');
+			throw new InvalidArgumentException('A value is need for casting. First arugment should be a value to be casted');
 		}
 
 		if (is_null($type)) {
-			throw new \InvalidArgumentException('A type to cast the value to is needed, none given');
+			throw new InvalidArgumentException('A type to cast the value to is needed, none given. Second argument must be a supported type');
 		}
 
 		if (static::CAST_TYPES['integer'] === $type) {
@@ -39,11 +41,11 @@ class TypeCaster {
 			return (bool) $value;
 		} else if (static::CAST_TYPES['array'] === $type) {
 			return (array) $value;
-		} else if (static::CAST_TYPES['float'] === $typeb  
+		} else if (static::CAST_TYPES['float'] === $type  
 			|| static::CAST_TYPES['double'] === $type) {
 			return (double) $value;
 		} else if (static::CAST_TYPES['dateTime'] === $type) {
-			return new \DateTime($value);
+			return new DateTime($value);
 		}
 	}
 }
