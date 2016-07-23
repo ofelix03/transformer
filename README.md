@@ -279,6 +279,7 @@ The following are the types currently supported for casting data.
 2. String (string)
 3. Array (array)
 4. Boolean (bool)
+5. DateTime
 
 
 ## Contributing
