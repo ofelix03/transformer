@@ -280,10 +280,6 @@ The following are the types currently supported for casting data.
 3. Array (array)
 4. Boolean (bool)
 
-## Feature Features
-
-PHP's [DateTime](http://php.net/manual/en/class.datetime.php "PHP DateTime Class") class and [Carbon](http://carbon.nesbot.com/ 'PHP Carbon Library') will be supported in the  next release. Other primitive types such as [double](http://php.net/manual/en/language.types.float.php "Dobule")(also known as float) and [object](http://php.net/manual/en/language.types.object.php "Object") will be supported with future releases.
-
 
 ## Contributing
 
